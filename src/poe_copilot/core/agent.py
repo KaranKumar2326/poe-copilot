@@ -8,7 +8,7 @@ from typing import Any, Callable
 import anthropic
 
 logger = logging.getLogger(__name__)
-
+DEFAULT_MAX_TOKENS = 4096
 
 # ---------------------------------------------------------------------------
 # NextStep — the only return type from any step
@@ -87,7 +87,7 @@ class AgentStep:
         model: str,
         tools: list | None = None,
         next_agent: str | None = None,
-        max_tokens: int = 4096,
+        max_tokens: int = DEFAULT_MAX_TOKENS,
         client: anthropic.Anthropic | None = None,
     ):
         """Initialize the agent step and create an empty message thread."""

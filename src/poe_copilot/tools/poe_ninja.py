@@ -124,11 +124,12 @@ POE_NINJA_TOOLS = [
 # Cap results sent to the LLM to avoid blowing up context
 MAX_RESULTS = 50
 MAX_BUILD_META_RESULTS = 15
+POE_NINJA_TIMEOUT_SECONDS = 10
 
 
 def _fetch(endpoint: str, params: dict) -> dict:
     """Send a GET request to the poe.ninja API and return the JSON response."""
-    with httpx.Client(timeout=10, follow_redirects=True) as client:
+    with httpx.Client(timeout=POE_NINJA_TIMEOUT_SECONDS, follow_redirects=True) as client:
         resp = client.get(f"{BASE_URL}/{endpoint}", params=params)
         resp.raise_for_status()
         data = resp.json()

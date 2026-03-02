@@ -9,13 +9,13 @@ import anthropic
 from poe_copilot.constants import REGISTRY_FILE
 from poe_copilot.tools import _HANDLERS, TOOL_DEFINITIONS
 
-from .agent import AgentStep, ClarifyingQuestion, NextStep, ToolStep
+from .agent import AgentStep, ClarifyingQuestion, NextStep, ToolStep, DEFAULT_MAX_TOKENS
 from .cli import STATUS_LABELS, tool_status_label
 from .context import build_primer
 from .delegation import DELEGATION_TOOL_NAMES, DELEGATION_TOOLS
 
 logger = logging.getLogger(__name__)
-
+MAX_API_CALLS = 25
 
 class Orchestrator:
     """Central controller that routes user queries through the agent pipeline.
@@ -35,7 +35,7 @@ class Orchestrator:
         self.settings = settings
         self.messages: list[dict] = []
         self.api_calls = 0
-        self.max_api_calls = 25
+        self.max_api_calls = MAX_API_CALLS
         self._accumulated_research: list[str] = []
         self._conversation_context: str = ""
         self._on_status: Optional[Callable[[str], None]] = None
@@ -61,7 +61,7 @@ class Orchestrator:
                 model=cfg["model"],
                 tools=tools,
                 next_agent=cfg.get("next"),
-                max_tokens=cfg.get("max_tokens", 4096),
+                max_tokens=cfg.get("max_tokens", DEFAULT_MAX_TOKENS),
                 client=client,
             )
 

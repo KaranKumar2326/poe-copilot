@@ -9,6 +9,7 @@ from ddgs import DDGS
 MAX_CONTENT_CHARS = 6000
 MAX_INTRO_CHARS = 2000
 MAX_RESULTS = 8
+WEB_REQUEST_TIMEOUT_SECONDS = 15
 
 # Tags whose content is noise rather than article text
 _STRIP_TAGS = {
@@ -180,7 +181,7 @@ def _read_page(url: str, section: str | None = None) -> dict:
     """Fetch a webpage and return its outline or a targeted section."""
     try:
         with httpx.Client(
-            timeout=15,
+            timeout=WEB_REQUEST_TIMEOUT_SECONDS,
             follow_redirects=True,
             headers={
                 "User-Agent": (
